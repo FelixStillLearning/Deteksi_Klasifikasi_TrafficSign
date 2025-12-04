@@ -9,7 +9,10 @@ import seaborn as sns
 
 from data_loader import load_data
 from model_builder import build_model
-from config import EPOCHS, BATCH_SIZE, CLASS_FOLDERS
+from config import EPOCHS, BATCH_SIZE, CLASS_FOLDERS, BASE_DIR
+
+# Path untuk menyimpan model
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
 
 def main():
@@ -94,15 +97,15 @@ def main():
     # ================================
     # 8. EXPORT HISTORY KE CSV
     # ================================
+    os.makedirs(MODELS_DIR, exist_ok=True)
     history_df = pd.DataFrame(history.history)
-    history_df.to_csv("../models/training_history.csv", index=False)
+    history_df.to_csv(os.path.join(MODELS_DIR, "training_history.csv"), index=False)
     print("History training disimpan ke training_history.csv")
 
     # ================================
     # 9. SIMPAN MODEL
     # ================================
-    os.makedirs("../models", exist_ok=True)
-    model.save("../models/traffic_sign_model.h5")
+    model.save(os.path.join(MODELS_DIR, "traffic_sign_model.h5"))
     print("Model disimpan sebagai traffic_sign_model.h5")
 
     # ================================
