@@ -1,3 +1,3 @@
 # Project Akhir JAringan Syaraf Tiruan 
-# Felix ANgga Resky
+# Felix Angga Resky
 # Ghinova Klarisa Irawadi
