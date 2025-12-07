@@ -74,14 +74,20 @@ def main():
 
     cm = confusion_matrix(y_true, y_pred_classes)
 
-    plt.figure(figsize=(6, 5))
+    fig_cm = plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
                 xticklabels=CLASS_FOLDERS,
                 yticklabels=CLASS_FOLDERS)
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
     plt.title('Confusion Matrix')
-    plt.show()
+    plt.tight_layout()
+
+    cm_path = os.path.join(MODELS_DIR, "confusion_matrix.jpg")
+    plt.savefig(cm_path, dpi=300)
+    plt.close(fig_cm)
+
+    print(f"Confusion matrix disimpan di: {cm_path}")
 
     # ================================
     # 7. CLASSIFICATION REPORT
@@ -111,7 +117,7 @@ def main():
     # ================================
     # 10. PLOT GRAFIK AKURASI & LOSS
     # ================================
-    plt.figure(figsize=(12, 5))
+    fig_curve = plt.figure(figsize=(12, 5))
 
     # Akurasi
     plt.subplot(1, 2, 1)
@@ -134,7 +140,12 @@ def main():
     plt.grid()
 
     plt.tight_layout()
-    plt.show()
+
+    graph_path = os.path.join(MODELS_DIR, "training_curves.jpg")
+    plt.savefig(graph_path, dpi=300)
+    plt.close(fig_curve)
+
+    print(f"Grafik training disimpan di: {graph_path}")
 
 
 if __name__ == "__main__":

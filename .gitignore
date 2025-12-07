@@ -152,8 +152,6 @@ Thumbs.db
 
 # Project specific
 datasets/
-models/
-*.h5
 *.hdf5
 *.pkl
 *.pth

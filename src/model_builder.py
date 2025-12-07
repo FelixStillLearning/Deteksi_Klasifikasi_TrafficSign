@@ -28,7 +28,7 @@ def build_model():
 
     # ===== COMPILE =====
     model.compile(
-        optimizer=Adam(),
+        optimizer=Adam(learning_rate=0.0005),
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
