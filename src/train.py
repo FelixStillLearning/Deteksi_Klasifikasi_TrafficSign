@@ -2,6 +2,7 @@ import os
 import csv
 import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import confusion_matrix, classification_report
 import numpy as np
 import pandas as pd
@@ -21,6 +22,7 @@ def main():
     # ================================
     X_train, X_val, y_train, y_val = load_data()
 
+
     # ================================
     # 2. BUILD MODEL
     # ================================
@@ -32,41 +34,55 @@ def main():
     # ================================
     early_stop = EarlyStopping(
         monitor='val_accuracy',
-        patience=3,
+        patience=5,
         restore_best_weights=True
     )
 
     lr_scheduler = ReduceLROnPlateau(
-        monitor='val_loss',
+        monitor="val_loss",
         factor=0.5,
-        patience=2,
-        min_lr=1e-6,
+        patience=3,
+        min_lr=1e-5,
         verbose=1
     )
 
     callbacks = [early_stop, lr_scheduler]
 
     # ================================
-    # 4. TRAINING
+    # 4. DATA AUGMENTATION
+    # ================================
+    train_datagen = ImageDataGenerator(
+    rotation_range=5,
+    zoom_range=0.1,
+    width_shift_range=0.05,
+    height_shift_range=0.05
+    )
+
+    train_generator = train_datagen.flow(
+        X_train, y_train,
+        batch_size=BATCH_SIZE
+    )
+
+    # ================================
+    # 5. TRAINING
     # ================================
     history = model.fit(
-        X_train, y_train,
+        train_generator,
         validation_data=(X_val, y_val),
         epochs=EPOCHS,
-        batch_size=BATCH_SIZE,
         callbacks=callbacks,
         verbose=1
     )
 
     # ================================
-    # 5. EVALUASI MODEL
+    # 6. EVALUASI MODEL
     # ================================
     val_loss, val_acc = model.evaluate(X_val, y_val)
     print("Akurasi Validation :", val_acc)
     print("Loss Validation    :", val_loss)
 
     # ================================
-    # 6. CONFUSION MATRIX
+    # 7. CONFUSION MATRIX
     # ================================
     y_pred = model.predict(X_val)
     y_pred_classes = np.argmax(y_pred, axis=1)
@@ -81,10 +97,17 @@ def main():
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
     plt.title('Confusion Matrix')
+    
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    cm_path = os.path.join(MODELS_DIR, "confusion_matrix_val.jpg")
+    plt.savefig(cm_path, dpi=300)
+
     plt.show()
 
+    print("Confusion matrix disimpan di:", cm_path)
+
     # ================================
-    # 7. CLASSIFICATION REPORT
+    # 8. CLASSIFICATION REPORT
     # ================================
     report = classification_report(
         y_true,
@@ -95,7 +118,7 @@ def main():
     print(report)
 
     # ================================
-    # 8. EXPORT HISTORY KE CSV
+    # 9. EXPORT HISTORY KE CSV
     # ================================
     os.makedirs(MODELS_DIR, exist_ok=True)
     history_df = pd.DataFrame(history.history)
@@ -103,13 +126,13 @@ def main():
     print("History training disimpan ke training_history.csv")
 
     # ================================
-    # 9. SIMPAN MODEL
+    # 10. SIMPAN MODEL
     # ================================
     model.save(os.path.join(MODELS_DIR, "traffic_sign_model.h5"))
     print("Model disimpan sebagai traffic_sign_model.h5")
 
     # ================================
-    # 10. PLOT GRAFIK AKURASI & LOSS
+    # 11. PLOT GRAFIK AKURASI & LOSS
     # ================================
     plt.figure(figsize=(12, 5))
 

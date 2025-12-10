@@ -62,7 +62,7 @@ def main():
         img = img / 255.0
 
         X_test.append(img)
-        y_test.append(target_classes.index(class_id))  # 0–4
+        y_test.append(target_classes.index(class_id))
 
     # ================================
     # 4. KONVERSI KE NUMPY & ONE-HOT

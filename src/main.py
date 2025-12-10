@@ -25,15 +25,12 @@ class TrafficSignApp:
             return
         
         # Class names mapping
-        self.class_names = {i: name for i, name in enumerate(CLASS_FOLDERS)}
-        
-        # Class info mapping (ID -> Full Name)
-        self.class_info = {
-            "3": "Speed Limit 60",
-            "14": "Stop",
-            "17": "No Entry",
-            "18": "General Caution",
-            "33": "Turn Right Ahead"
+        self.class_map = {
+            0: ("3",  "Speed Limit 60"),
+            1: ("14", "Stop"),
+            2: ("17", "No Entry"),
+            3: ("18", "General Caution"),
+            4: ("33", "Turn Right Ahead")
         }
         
         # Variables
@@ -244,21 +241,20 @@ class TrafficSignApp:
             predictions = self.model.predict(img, verbose=0)[0]
             class_idx = np.argmax(predictions)
             confidence = predictions[class_idx] * 100
-            class_name = self.class_names[class_idx]
-            class_full_name = self.class_info.get(class_name, class_name)
+
+            class_id, class_full_name = self.class_map[class_idx]
             
             # Display results
             result_text = f"✅ Prediksi:\n\n"
-            result_text += f"Class ID: {class_name}\n"
+            result_text += f"Class ID: {class_id}\n"
             result_text += f"Sign: {class_full_name}\n"
             result_text += f"Confidence: {confidence:.2f}%\n\n"
             result_text += "Top 3 Predictions:\n"
-            
+
             top3_idx = np.argsort(predictions)[-3:][::-1]
             for idx in top3_idx:
-                cls_name = self.class_names[idx]
-                cls_full = self.class_info.get(cls_name, cls_name)
-                result_text += f"  {cls_full} ({cls_name}): {predictions[idx]*100:.1f}%\n"
+                cid, cname = self.class_map[idx]
+                result_text += f"  {cname} ({cid}): {predictions[idx]*100:.1f}%\n"
             
             self.result_text.config(text=result_text, fg="#2196F3")
             self.status_label.config(text=f"✓ Status: Prediksi selesai - {class_full_name}", fg="#4CAF50")
