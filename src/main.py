@@ -328,7 +328,7 @@ class TrafficSignApp:
         info += f"Input Size: {IMG_SIZE}x{IMG_SIZE}x3\n"
         info += f"Classes: {len(CLASS_FOLDERS)}\n"
         info += f"Class Names: {', '.join(CLASS_FOLDERS)}\n\n"
-        info += f"Training Accuracy: 99.93%\n"
+        info += f"Training Accuracy: (97.67)%\n"
         
         messagebox.showinfo("Model Info", info)
 
