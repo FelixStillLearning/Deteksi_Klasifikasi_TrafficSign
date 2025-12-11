@@ -49,4 +49,4 @@ for cls in CLASS_FOLDERS:
     print(f"  Train : {len(train_files)}")
     print(f"  Val   : {len(val_files)}\n")
 
-print("✅ SPLIT TRAIN–VALIDATION SELESAI")
+print(" SPLIT TRAIN–VALIDATION SELESAI")

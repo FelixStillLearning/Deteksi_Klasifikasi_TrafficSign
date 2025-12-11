@@ -31,7 +31,7 @@ for cls in CLASS_FOLDERS:
     print(f"Kelas {cls} - Data awal: {len(files)}")
 
     if len(files) < TARGET_PER_CLASS:
-        print(f"⚠️ WARNING: Data kelas {cls} kurang dari {TARGET_PER_CLASS}\n")
+        print(f" WARNING: Data kelas {cls} kurang dari {TARGET_PER_CLASS}\n")
         selected_files = files
     else:
         selected_files = random.sample(files, TARGET_PER_CLASS)
@@ -43,4 +43,4 @@ for cls in CLASS_FOLDERS:
 
     print(f"Kelas {cls} - Setelah balancing: {len(selected_files)}\n")
 
-print("✅ UNDERSAMPLING SELESAI")
+print(" UNDERSAMPLING SELESAI")

@@ -79,7 +79,7 @@ class TrafficSignApp:
         
         btn_upload_img = tk.Button(
             button_frame, 
-            text="📁 Upload Gambar", 
+            text=" Upload Gambar", 
             command=self.upload_image,
             bg=COLOR_PRIMARY,
             **btn_style
@@ -88,7 +88,7 @@ class TrafficSignApp:
         
         btn_upload_video = tk.Button(
             button_frame, 
-            text="🎥 Upload Video", 
+            text=" Upload Video", 
             command=self.upload_video,
             bg=COLOR_PRIMARY,
             **btn_style
@@ -97,7 +97,7 @@ class TrafficSignApp:
         
         btn_info = tk.Button(
             button_frame, 
-            text="ℹ️ Info Model", 
+            text=" Info Model", 
             command=self.show_model_info,
             bg=COLOR_SUCCESS,
             **btn_style
@@ -138,7 +138,7 @@ class TrafficSignApp:
         
         result_label = tk.Label(
             right_frame, 
-            text="📊 Hasil Prediksi", 
+            text=" Hasil Prediksi", 
             font=("Segoe UI", 12, "bold"), 
             bg="white",
             fg=BG_DARK
@@ -150,7 +150,7 @@ class TrafficSignApp:
         
         self.result_text = tk.Label(
             self.result_frame, 
-            text="📝 Belum ada hasil\n\nUpload gambar atau video\nuntuk melihat hasil prediksi",
+            text=" Belum ada hasil\n\nUpload gambar atau video\nuntuk melihat hasil prediksi",
             font=("Segoe UI", 11),
             bg="#f9f9f9",
             fg="#666666",
@@ -245,7 +245,7 @@ class TrafficSignApp:
             class_id, class_full_name = self.class_map[class_idx]
             
             # Display results
-            result_text = f"✅ Prediksi:\n\n"
+            result_text = f"Prediksi:\n\n"
             result_text += f"Class ID: {class_id}\n"
             result_text += f"Sign: {class_full_name}\n"
             result_text += f"Confidence: {confidence:.2f}%\n\n"
@@ -264,7 +264,7 @@ class TrafficSignApp:
             self.status_label.config(text="⚠ Status: Error saat prediksi", fg="#f44336")
     
     def predict_video(self, video_path):
-        self.status_label.config(text="⏳ Status: Processing video...", fg="#FF9800")
+        self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
         self.root.update()
         
         try:
@@ -307,7 +307,7 @@ class TrafficSignApp:
                 class_name = self.class_names[class_idx]
                 class_full_name = self.class_info.get(class_name, class_name)
                 
-                result_text = f"✅ Hasil Video:\n\n"
+                result_text = f" Hasil Video:\n\n"
                 result_text += f"Class ID: {class_name}\n"
                 result_text += f"Sign: {class_full_name}\n"
                 result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
@@ -319,7 +319,7 @@ class TrafficSignApp:
             
         except Exception as e:
             messagebox.showerror("Error", f"Gagal proses video: {e}")
-            self.status_label.config(text="⚠ Status: Error saat proses video", fg="#f44336")
+            self.status_label.config(text=" Status: Error saat proses video", fg="#f44336")
     
     def show_model_info(self):
         info = f"Model Information\n"
