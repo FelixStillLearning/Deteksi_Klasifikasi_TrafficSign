@@ -56,7 +56,7 @@ class TrafficSignApp:
         
         title_label = tk.Label(
             title_frame, 
-            text="🚦 Traffic Sign Classification System", 
+            text="Traffic Sign Classification System", 
             font=("Segoe UI", 20, "bold"),
             bg=BG_DARK, 
             fg="white"
@@ -166,7 +166,7 @@ class TrafficSignApp:
         
         self.status_label = tk.Label(
             status_frame, 
-            text="✓ Status: Ready", 
+            text=" Status: Ready", 
             font=("Segoe UI", 9),
             bg=BG_DARK,
             fg="#4CAF50",
@@ -184,7 +184,7 @@ class TrafficSignApp:
             self.current_image = file_path
             self.current_video_path = None
             self.display_image(file_path)
-            self.status_label.config(text=f"✓ Status: Gambar loaded - {os.path.basename(file_path)}", fg="#4CAF50")
+            self.status_label.config(text=f" Status: Gambar loaded - {os.path.basename(file_path)}", fg="#4CAF50")
             
             # Auto predict setelah upload
             self.predict_image(file_path)
@@ -211,7 +211,7 @@ class TrafficSignApp:
                 self.display_image(temp_path)
                 os.remove(temp_path)
                 
-            self.status_label.config(text=f"✓ Status: Video loaded - {os.path.basename(file_path)}", fg="#4CAF50")
+            self.status_label.config(text=f" Status: Video loaded - {os.path.basename(file_path)}", fg="#4CAF50")
             
             # Auto predict video
             self.predict_video(file_path)
@@ -257,7 +257,7 @@ class TrafficSignApp:
                 result_text += f"  {cname} ({cid}): {predictions[idx]*100:.1f}%\n"
             
             self.result_text.config(text=result_text, fg="#2196F3")
-            self.status_label.config(text=f"✓ Status: Prediksi selesai - {class_full_name}", fg="#4CAF50")
+            self.status_label.config(text=f" Status: Prediksi selesai - {class_full_name}", fg="#4CAF50")
             
         except Exception as e:
             messagebox.showerror("Error", f"Gagal prediksi: {e}")
@@ -307,7 +307,7 @@ class TrafficSignApp:
                 class_name = self.class_names[class_idx]
                 class_full_name = self.class_info.get(class_name, class_name)
                 
-                result_text = f" Hasil Video:\n\n"
+                result_text = f"Hasil Video:\n\n"
                 result_text += f"Class ID: {class_name}\n"
                 result_text += f"Sign: {class_full_name}\n"
                 result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
@@ -328,7 +328,7 @@ class TrafficSignApp:
         info += f"Input Size: {IMG_SIZE}x{IMG_SIZE}x3\n"
         info += f"Classes: {len(CLASS_FOLDERS)}\n"
         info += f"Class Names: {', '.join(CLASS_FOLDERS)}\n\n"
-        info += f"Training Accuracy: 99.93%\n"
+        info += f"Training Accuracy: 99%\n"
         
         messagebox.showinfo("Model Info", info)
 
