@@ -261,7 +261,7 @@ class TrafficSignApp:
             
         except Exception as e:
             messagebox.showerror("Error", f"Gagal prediksi: {e}")
-            self.status_label.config(text="⚠ Status: Error saat prediksi", fg="#f44336")
+            self.status_label.config(text=" Status: Error saat prediksi", fg="#f44336")
     
     def predict_video(self, video_path):
         self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
