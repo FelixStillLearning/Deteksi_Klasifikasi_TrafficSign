@@ -86,14 +86,14 @@ class TrafficSignApp:
         )
         btn_upload_img.pack(side="left", padx=10)
         
-        btn_upload_video = tk.Button(
-            button_frame, 
-            text=" Upload Video", 
-            command=self.upload_video,
-            bg=COLOR_PRIMARY,
-            **btn_style
-        )
-        btn_upload_video.pack(side="left", padx=10)
+        # btn_upload_video = tk.Button(
+        #     button_frame, 
+        #     text=" Upload Video", 
+        #     command=self.upload_video,
+        #     bg=COLOR_PRIMARY,
+        #     **btn_style
+        # )
+        # btn_upload_video.pack(side="left", padx=10)
         
         btn_info = tk.Button(
             button_frame, 
@@ -114,7 +114,7 @@ class TrafficSignApp:
         
         preview_label = tk.Label(
             left_frame, 
-            text="Preview Gambar / Video", 
+            text="Preview Gambar", 
             font=("Segoe UI", 12, "bold"), 
             bg="white",
             fg=BG_DARK
@@ -150,7 +150,7 @@ class TrafficSignApp:
         
         self.result_text = tk.Label(
             self.result_frame, 
-            text=" Belum ada hasil\n\nUpload gambar atau video\nuntuk melihat hasil prediksi",
+            text=" Belum ada hasil\n\nUpload gambar\nuntuk melihat hasil prediksi",
             font=("Segoe UI", 11),
             bg="#f9f9f9",
             fg="#666666",
@@ -189,32 +189,32 @@ class TrafficSignApp:
             # Auto predict setelah upload
             self.predict_image(file_path)
     
-    def upload_video(self):
-        file_path = filedialog.askopenfilename(
-            title="Pilih Video",
-            filetypes=[("Video files", "*.mp4 *.avi *.mov")]
-        )
+    # def upload_video(self):
+    #     file_path = filedialog.askopenfilename(
+    #         title="Pilih Video",
+    #         filetypes=[("Video files", "*.mp4 *.avi *.mov")]
+    #     )
         
-        if file_path:
-            self.current_video_path = file_path
-            self.current_image = None
+    #     if file_path:
+    #         self.current_video_path = file_path
+    #         self.current_image = None
             
-            # Display first frame
-            cap = cv2.VideoCapture(file_path)
-            ret, frame = cap.read()
-            cap.release()
+    #         # Display first frame
+    #         cap = cv2.VideoCapture(file_path)
+    #         ret, frame = cap.read()
+    #         cap.release()
             
-            if ret:
-                # Save temp first frame
-                temp_path = "temp_frame.jpg"
-                cv2.imwrite(temp_path, frame)
-                self.display_image(temp_path)
-                os.remove(temp_path)
+    #         if ret:
+    #             # Save temp first frame
+    #             temp_path = "temp_frame.jpg"
+    #             cv2.imwrite(temp_path, frame)
+    #             self.display_image(temp_path)
+    #             os.remove(temp_path)
                 
-            self.status_label.config(text=f" Status: Video loaded - {os.path.basename(file_path)}", fg="#4CAF50")
+    #         self.status_label.config(text=f" Status: Video loaded - {os.path.basename(file_path)}", fg="#4CAF50")
             
-            # Auto predict video
-            self.predict_video(file_path)
+    #         # Auto predict video
+    #         self.predict_video(file_path)
     
     def display_image(self, image_path):
         img = Image.open(image_path)
@@ -263,63 +263,63 @@ class TrafficSignApp:
             messagebox.showerror("Error", f"Gagal prediksi: {e}")
             self.status_label.config(text=" Status: Error saat prediksi", fg="#f44336")
     
-    def predict_video(self, video_path):
-        self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
-        self.root.update()
+    # def predict_video(self, video_path):
+    #     self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
+    #     self.root.update()
         
-        try:
-            cap = cv2.VideoCapture(video_path)
-            frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            fps = int(cap.get(cv2.CAP_PROP_FPS))
+    #     try:
+    #         cap = cv2.VideoCapture(video_path)
+    #         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    #         fps = int(cap.get(cv2.CAP_PROP_FPS))
             
-            # Sample every 30 frames
-            sample_rate = 30
-            predictions_list = []
+    #         # Sample every 30 frames
+    #         sample_rate = 30
+    #         predictions_list = []
             
-            frame_idx = 0
-            while cap.isOpened():
-                ret, frame = cap.read()
-                if not ret:
-                    break
+    #         frame_idx = 0
+    #         while cap.isOpened():
+    #             ret, frame = cap.read()
+    #             if not ret:
+    #                 break
                 
-                if frame_idx % sample_rate == 0:
-                    # Preprocess
-                    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-                    img = img / 255.0
-                    img = np.expand_dims(img, axis=0)
+    #             if frame_idx % sample_rate == 0:
+    #                 # Preprocess
+    #                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #                 img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    #                 img = img / 255.0
+    #                 img = np.expand_dims(img, axis=0)
                     
-                    # Predict
-                    predictions = self.model.predict(img, verbose=0)[0]
-                    class_idx = np.argmax(predictions)
-                    predictions_list.append(class_idx)
+    #                 # Predict
+    #                 predictions = self.model.predict(img, verbose=0)[0]
+    #                 class_idx = np.argmax(predictions)
+    #                 predictions_list.append(class_idx)
                 
-                frame_idx += 1
+    #             frame_idx += 1
             
-            cap.release()
+    #         cap.release()
             
-            # Most common prediction
-            if predictions_list:
-                from collections import Counter
-                most_common = Counter(predictions_list).most_common(1)[0]
-                class_idx = most_common[0]
-                occurrences = most_common[1]
-                class_name = self.class_names[class_idx]
-                class_full_name = self.class_info.get(class_name, class_name)
+    #         # Most common prediction
+    #         if predictions_list:
+    #             from collections import Counter
+    #             most_common = Counter(predictions_list).most_common(1)[0]
+    #             class_idx = most_common[0]
+    #             occurrences = most_common[1]
+    #             class_name = self.class_names[class_idx]
+    #             class_full_name = self.class_info.get(class_name, class_name)
                 
-                result_text = f"Hasil Video:\n\n"
-                result_text += f"Class ID: {class_name}\n"
-                result_text += f"Sign: {class_full_name}\n"
-                result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
-                result_text += f"Total Frames: {frame_count}\n"
-                result_text += f"FPS: {fps}\n"
+    #             result_text = f"Hasil Video:\n\n"
+    #             result_text += f"Class ID: {class_name}\n"
+    #             result_text += f"Sign: {class_full_name}\n"
+    #             result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
+    #             result_text += f"Total Frames: {frame_count}\n"
+    #             result_text += f"FPS: {fps}\n"
                 
-                self.result_text.config(text=result_text, fg="green")
-                self.status_label.config(text=f"Status: Video selesai - {class_full_name}")
+    #             self.result_text.config(text=result_text, fg="green")
+    #             self.status_label.config(text=f"Status: Video selesai - {class_full_name}")
             
-        except Exception as e:
-            messagebox.showerror("Error", f"Gagal proses video: {e}")
-            self.status_label.config(text=" Status: Error saat proses video", fg="#f44336")
+    #     except Exception as e:
+    #         messagebox.showerror("Error", f"Gagal proses video: {e}")
+    #         self.status_label.config(text=" Status: Error saat proses video", fg="#f44336")
     
     def show_model_info(self):
         info = f"Model Information\n"
