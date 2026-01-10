@@ -157,6 +157,12 @@ def main():
     plt.grid()
 
     plt.tight_layout()
+
+    # SIMPAN GRAFIK
+    graph_path = os.path.join(MODELS_DIR, "training_graph_accuracy_loss.jpg")
+    plt.savefig(graph_path, dpi=300)
+    print("Grafik training disimpan di:", graph_path)
+
     plt.show()
 
 

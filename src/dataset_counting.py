@@ -4,7 +4,7 @@ import os
 # PATH KE DATASET RAW
 # ================================
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATASET_PATH = os.path.join(BASE_DIR, "datasets_balanced")
+DATASET_PATH = os.path.join(BASE_DIR, "datasets", "raw")
 
 CLASS_FOLDERS = ["3", "14", "17", "18", "33"]
 total_semua = 0
