@@ -266,7 +266,14 @@ class TrafficSignApp:
     # def predict_video(self, video_path):
     #     self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
     #     self.root.update()
+    # def predict_video(self, video_path):
+    #     self.status_label.config(text=" Status: Processing video...", fg="#FF9800")
+    #     self.root.update()
         
+    #     try:
+    #         cap = cv2.VideoCapture(video_path)
+    #         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    #         fps = int(cap.get(cv2.CAP_PROP_FPS))
     #     try:
     #         cap = cv2.VideoCapture(video_path)
     #         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -275,7 +282,15 @@ class TrafficSignApp:
     #         # Sample every 30 frames
     #         sample_rate = 30
     #         predictions_list = []
+    #         # Sample every 30 frames
+    #         sample_rate = 30
+    #         predictions_list = []
             
+    #         frame_idx = 0
+    #         while cap.isOpened():
+    #             ret, frame = cap.read()
+    #             if not ret:
+    #                 break
     #         frame_idx = 0
     #         while cap.isOpened():
     #             ret, frame = cap.read()
@@ -288,16 +303,36 @@ class TrafficSignApp:
     #                 img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
     #                 img = img / 255.0
     #                 img = np.expand_dims(img, axis=0)
+    #             if frame_idx % sample_rate == 0:
+    #                 # Preprocess
+    #                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #                 img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    #                 img = img / 255.0
+    #                 img = np.expand_dims(img, axis=0)
                     
+    #                 # Predict
+    #                 predictions = self.model.predict(img, verbose=0)[0]
+    #                 class_idx = np.argmax(predictions)
+    #                 predictions_list.append(class_idx)
     #                 # Predict
     #                 predictions = self.model.predict(img, verbose=0)[0]
     #                 class_idx = np.argmax(predictions)
     #                 predictions_list.append(class_idx)
                 
     #             frame_idx += 1
+    #             frame_idx += 1
             
     #         cap.release()
+    #         cap.release()
             
+    #         # Most common prediction
+    #         if predictions_list:
+    #             from collections import Counter
+    #             most_common = Counter(predictions_list).most_common(1)[0]
+    #             class_idx = most_common[0]
+    #             occurrences = most_common[1]
+    #             class_name = self.class_names[class_idx]
+    #             class_full_name = self.class_info.get(class_name, class_name)
     #         # Most common prediction
     #         if predictions_list:
     #             from collections import Counter
@@ -313,10 +348,21 @@ class TrafficSignApp:
     #             result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
     #             result_text += f"Total Frames: {frame_count}\n"
     #             result_text += f"FPS: {fps}\n"
+    #             result_text = f"Hasil Video:\n\n"
+    #             result_text += f"Class ID: {class_name}\n"
+    #             result_text += f"Sign: {class_full_name}\n"
+    #             result_text += f"Deteksi: {occurrences}/{len(predictions_list)} frames\n"
+    #             result_text += f"Total Frames: {frame_count}\n"
+    #             result_text += f"FPS: {fps}\n"
                 
     #             self.result_text.config(text=result_text, fg="green")
     #             self.status_label.config(text=f"Status: Video selesai - {class_full_name}")
+    #             self.result_text.config(text=result_text, fg="green")
+    #             self.status_label.config(text=f"Status: Video selesai - {class_full_name}")
             
+    #     except Exception as e:
+    #         messagebox.showerror("Error", f"Gagal proses video: {e}")
+    #         self.status_label.config(text=" Status: Error saat proses video", fg="#f44336")
     #     except Exception as e:
     #         messagebox.showerror("Error", f"Gagal proses video: {e}")
     #         self.status_label.config(text=" Status: Error saat proses video", fg="#f44336")
